@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sketch Primitives</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./js/d3.v2.js"></script>
+    <script type="text/javascript" src="./js/require.js"></script>
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <style>
+    path {
+      fill: none;
+      stroke-width: 2.0px;      
+    }
+
+    svg {
+      border: 1.5px groove #eee;
+    }
+    p.help-block {
+      color: #0099CC;
+    }
+    </style>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span4" id="area1">
+          <form class="form-horizontal">
+
+          <!-- Form Name -->
+          
+          <legend>Sketch Setting</legend>
+        
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="Roughness">roughness</label>
+            <div class="controls">
+              <input id="Roughness" name="Roughness" type="text" value="0.8" class="input-xlarge">
+              <p class="help-block">Set the general roughness of the sketch</p>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="Bowing">bowing</label>
+            <div class="controls">
+              <input id="Bowing" name="Bowing" type="text" value="0.8" class="input-xlarge">
+              <p class="help-block">Set the amount of 'bowing' of lines</p>
+            </div>
+          </div>
+
+          <!-- Select Basic -->
+          <div class="control-group">
+            <label class="control-label" for="primitiveType">Select Primitive</label>
+            <div class="controls">
+              <select id="primitiveType" name="primitiveType" class="input-xlarge">
+                <option>Line</option>
+                <option>Rectangle</option>
+                <option>Ellipse</option>
+                <option>Triangle</option>
+                <option>Sector</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="Parameter1">parameter1</label>
+            <div class="controls">
+              <input id="Parameter1" name="Parameter1" type="text" value="500" class="input-xlarge">
+              <p class="help-block" id="help1">x coordinate of the start point</p>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="Parameter2">parameter2</label>
+            <div class="controls">
+              <input id="Parameter2" name="Parameter2" type="text" value="500" class="input-xlarge">
+              <p class="help-block" id="help2">y coordinate of the start point</p>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group">
+            <label class="control-label" for="Parameter3">parameter3</label>
+            <div class="controls">
+              <input id="Parameter3" name="Parameter3" type="text" value="300" class="input-xlarge">
+              <p class="help-block" id="help3">x coordinate of the end point</p>
+            </div>
+          </div>
+
+          <!-- Text input-->
+          <div class="control-group" id="control4">
+            <label class="control-label" for="Parameter4">parameter4</label>
+            <div class="controls">
+              <input id="Parameter4" name="Parameter4" type="text" value="300" class="input-xlarge">
+              <p class="help-block" id="help4">y coordinate of the end point</p>
+            </div>
+          </div>
+
+          <div class="control-group" id="control5">
+            <label class="control-label" for="Parameter5">parameter5</label>
+            <div class="controls">
+              <input id="Parameter5" name="Parameter5" type="text" value="90" class="input-xlarge">
+              <p class="help-block" id="help5">x coordinate of the third point</p>
+            </div>
+          </div>
+
+          <div class="control-group" id="control6">
+            <label class="control-label" for="Parameter6">parameter6</label>
+            <div class="controls">
+              <input id="Parameter6" name="Parameter6" type="text" value="60" class="input-xlarge">
+              <p class="help-block" id="help6">y coordinate of the third point</p>
+            </div>
+          </div>
+          </form>
+
+          <!-- Button (Double) -->
+          <div class="control-group">
+            <div class="controls">
+              <button id="button1" name="button1" class="btn btn-success"><i class="icon-pencil"></i> Hand Draw</button>
+              <button id="button2" name="button2" class="btn btn-warning"><i class="icon-trash"></i> Clear</button>
+            </div>
+          </div>
+
+        </div>
+        
+        <!-- for overlap bug fix -->
+        <div class="span1"></div>
+
+        <div class="span7" id="area2">
+        </div>
+      </div> 
+      </div>
+    
+
+
+    <script type="text/javascript">
+    var sketch, vis, roughness, bowing, primitive, para1, para2, para3, para4; 
+    
+    require(["./js/sketch"], function(ske) {
+      
+      $(document).ready(function(){
+        $("#control5").hide();
+        $("#control6").hide();
+
+        $("#button1").click(function(){
+          //judge if the vis exists
+          if(!vis) {
+            vis = d3.select("#area2").append("svg:svg")
+                  .attr("width", 800)
+                  .attr("height", 800)
+                  .append("svg:g");
+          }
+          roughness = parseFloat($("#Roughness").val());
+          bowing = parseFloat($("#Bowing").val());
+          primitive = $("#primitiveType").val();
+          para1 = parseFloat($("#Parameter1").val());
+          para2 = parseFloat($("#Parameter2").val());
+          para3 = parseFloat($("#Parameter3").val());
+          para4 = parseFloat($("#Parameter4").val());
+          sketch = new ske(roughness, bowing, vis, d3, true);
+          sketch.setRoughness(roughness);
+          sketch.setBowing(bowing);
+          
+          switch(primitive) {
+            case "Line":
+              var linePrimi = sketch.line(para1,para2,para3,para4,100);
+              linePrimi.attr("stroke","red");
+              break;
+            case "Rectangle":
+              var rectPrimi = sketch.rect(para1,para2,para3,para4);
+              rectPrimi.attr("stroke", "steelblue");
+              break;
+            case "Ellipse":
+              var ellPrimi = sketch.ellipse(para1,para2,para3,para4);
+              ellPrimi.attr("stroke", "blue");
+              break;
+            case "Triangle":
+              var para5 = parseFloat($("#Parameter5").val());
+              var para6 = parseFloat($("#Parameter6").val());
+              var triPrimi = sketch.triangle(para1,para2,para3,para4,para5,para6);
+              triPrimi.attr("stroke", "black");
+              break;
+            case "Sector":
+              var para5 = parseFloat($("#Parameter5").val());
+              var secPrimi = sketch.sector(para1,para2,para3,para4,para5);
+              secPrimi.attr("stroke", "brown");
+              break;
+          }
+        });
+
+        $("#button2").click(function(){
+          d3.select("svg").remove();
+          vis = null;
+        });
+
+        $("#primitiveType").change(function() {
+          var type = $(this).find("option:selected").text();
+          switch(type) {
+            case "Line":
+              $("#help1").text("x coordinate of the start point");
+              $("#help2").text("y coordinate of the start point");
+              $("#help3").text("x coordinate of the end point");
+              $("#help4").text("y coordinate of the end point");
+              $("#control5").hide();
+              $("#control6").hide();
+              break;
+            case "Rectangle":
+              $("#help1").text("x coordinate of the rectangle position");
+              $("#help2").text("y coordinate of the rectangle position");
+              $("#help3").text("width of the rectangle");
+              $("#help4").text("height of the rectangle");
+              $("#control5").hide();
+              $("#control6").hide();
+              break;
+            case "Ellipse":
+              $("#help1").text("x coordinate of the ellipse position");
+              $("#help2").text("y coordinate of the ellipse position");
+              $("#help3").text("width of the ellipse");
+              $("#help4").text("height of the ellipse");
+              $("#control5").hide();
+              $("#control6").hide();
+              break;
+            case "Triangle":
+              $("#help1").text("x coordinate of the first point");
+              $("#help2").text("y coordinate of the first point");
+              $("#help3").text("x coordinate of the second point");
+              $("#help4").text("y coordinate of the second point");
+              $("#control5").show();
+              $("#control6").show();
+              break;
+            case "Sector":
+              $("#help1").text("x coordinate of the center of the sector");
+              $("#help2").text("y coordinate of the center of the sector");
+              $("#help3").text("radius of the sector");
+              $("#help4").text("the start angle of the sector");
+              $("#control5").show();
+              $("#help5").text("the end angle of the sector");
+              $("#control6").hide();
+              break;
+          }
+        });
+      });
+    });
+    </script>
+  </body>
+</html>

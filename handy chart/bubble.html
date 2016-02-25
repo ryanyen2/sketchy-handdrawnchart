@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Handy Chart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+    @font-face {
+      font-family: 'xkcd';
+      src: url('./Humor-Sans.ttf');
+    }
+
+    body {
+      font-size: 10px;
+      font-family: 'xkcd',sans-serif;
+    }
+    path {
+      fill:none;
+      stroke-width: 1.3px;
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    .x.axis path {
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+  
+  <script src="./js/d3.min.js"></script>
+
+  <script type="text/javascript" src="./js/require.js"></script>
+  <script type = "text/javascript">
+    require(["./js/sketch"], function(ske) {
+      var diameter = 960,
+          format = d3.format(",d"),
+          color = d3.scale.category20c();
+
+      var bubble = d3.layout.pack()
+          .sort(null)
+          .size([diameter, diameter])
+          .padding(1.5);
+
+      var svg = d3.select("body").append("svg")
+          .attr("width", diameter)
+          .attr("height", diameter)
+          .attr("class", "bubble");
+
+      d3.json("flare.json", function(error, root) {
+        var sketch = new ske(0.8,0.8,svg,d3);
+        var node = svg.selectAll(".node")
+            .data(bubble.nodes(classes(root)).filter(function(d) { 
+              return !d.children; }))
+            .enter().append("g")
+            .attr("class", "node")
+            .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+        var bubbleData = bubble.nodes(classes(root)).filter(function(d) { 
+              return !d.children; })
+        var length = bubbleData.length;
+        for(var i = 0; i < length; i++) {
+          var cirX = bubbleData[i].x;
+          var cirY = bubbleData[i].y;
+          var cirRadius = bubbleData[i].r;
+          var cirPrimi = sketch.circle(cirX, cirY, cirRadius);
+          var cirColor = color(bubbleData[i].packageName);
+          cirPrimi.attr("stroke", cirColor);
+        }
+
+        node.append("title")
+            .text(function(d) { return d.className + ": " + format(d.value); });
+/*
+        node.append("text")
+            .attr("dy", ".3em")
+            .style("text-anchor", "middle")
+            .text(function(d) { return d.className.substring(0, d.r / 3); });
+            */
+        svg.selectAll("text")
+           .data(bubbleData)
+           .enter()
+           .append("text")
+           .attr("x", function(d) { return d.x})
+           .attr("y", function(d) { return d.y})
+           .attr("dy", ".3em")
+           .style("text-anchor", "middle")
+           .text(function(d) { return d.className.substring(0, d.r / 3); });
+
+      });
+
+      // Returns a flattened hierarchy containing all leaf nodes under the root.
+      function classes(root) {
+        var classes = [];
+
+        function recurse(name, node) {
+          if (node.children) node.children.forEach(function(child) { recurse(node.name, child); });
+          else classes.push({packageName: name, className: node.name, value: node.size});
+        }
+
+        recurse(null, root);
+        return {children: classes};
+      }
+
+      d3.select(self.frameElement).style("height", diameter + "px");
+    });
+  </script>
+  </body>
+</html>
