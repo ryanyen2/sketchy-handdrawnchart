@@ -1,152 +1,152 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Sketch Primitives</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="text/javascript" src="./js/d3.v2.js"></script>
-    <script type="text/javascript" src="./js/require.js"></script>
-    <script src="js/jquery-2.1.1.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <style>
-    path {
-      fill: none;
-      stroke-width: 2.0px;      
+
+<head>
+	<title>Sketch Primitives</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		path {
+			fill: none;
+			stroke-width: 2.0px;
+		}
+		svg {
+			border: 1.5px groove #eee;
+		}
+		p.help-block {
+			color: #0099CC;
+		}
+    .buttons_group {
+      float: right;
     }
+	</style>
+	<!-- Bootstrap -->
+	<link href="./css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
 
-    svg {
-      border: 1.5px groove #eee;
-    }
-    p.help-block {
-      color: #0099CC;
-    }
-    </style>
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span4" id="area1">
-          <form class="form-horizontal">
+<body>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span4" id="area1">
+				<form class="form-horizontal">
 
-          <!-- Form Name -->
-          
-          <legend>Sketch Setting</legend>
-        
-          <!-- Text input-->
-          <div class="control-group">
-            <label class="control-label" for="Roughness">roughness</label>
-            <div class="controls">
-              <input id="Roughness" name="Roughness" type="text" value="0.8" class="input-xlarge">
-              <p class="help-block">Set the general roughness of the sketch</p>
-            </div>
-          </div>
+					<!-- Form Name -->
 
-          <!-- Text input-->
-          <div class="control-group">
-            <label class="control-label" for="Bowing">bowing</label>
-            <div class="controls">
-              <input id="Bowing" name="Bowing" type="text" value="0.8" class="input-xlarge">
-              <p class="help-block">Set the amount of 'bowing' of lines</p>
-            </div>
-          </div>
+					<legend>Sketch Setting</legend>
 
-          <!-- Select Basic -->
-          <div class="control-group">
-            <label class="control-label" for="primitiveType">Select Primitive</label>
-            <div class="controls">
-              <select id="primitiveType" name="primitiveType" class="input-xlarge">
+					<!-- Text input-->
+					<div class="control-group">
+						<label class="control-label" for="Roughness">roughness</label>
+						<div class="controls">
+							<input id="Roughness" name="Roughness" type="text" value="0.8" class="input-xlarge">
+							<p class="help-block">Set the general roughness of the sketch</p>
+						</div>
+					</div>
+
+					<!-- Text input-->
+					<div class="control-group">
+						<label class="control-label" for="Bowing">bowing</label>
+						<div class="controls">
+							<input id="Bowing" name="Bowing" type="text" value="0.8" class="input-xlarge">
+							<p class="help-block">Set the amount of 'bowing' of lines</p>
+						</div>
+					</div>
+
+					<!-- Select Basic -->
+					<div class="control-group">
+						<label class="control-label" for="primitiveType">Select Primitive</label>
+						<div class="controls">
+							<select id="primitiveType" name="primitiveType" class="input-xlarge">
                 <option>Line</option>
                 <option>Rectangle</option>
                 <option>Ellipse</option>
                 <option>Triangle</option>
                 <option>Sector</option>
               </select>
-            </div>
-          </div>
+						</div>
+					</div>
 
-          <!-- Text input-->
-          <div class="control-group">
-            <label class="control-label" for="Parameter1">parameter1</label>
-            <div class="controls">
-              <input id="Parameter1" name="Parameter1" type="text" value="500" class="input-xlarge">
-              <p class="help-block" id="help1">x coordinate of the start point</p>
-            </div>
-          </div>
+					<!-- Text input-->
+					<div class="control-group">
+						<label class="control-label" for="Parameter1">parameter1</label>
+						<div class="controls">
+							<input id="Parameter1" name="Parameter1" type="text" value="500" class="input-xlarge">
+							<p class="help-block" id="help1">x coordinate of the start point</p>
+						</div>
+					</div>
 
-          <!-- Text input-->
-          <div class="control-group">
-            <label class="control-label" for="Parameter2">parameter2</label>
-            <div class="controls">
-              <input id="Parameter2" name="Parameter2" type="text" value="500" class="input-xlarge">
-              <p class="help-block" id="help2">y coordinate of the start point</p>
-            </div>
-          </div>
+					<!-- Text input-->
+					<div class="control-group">
+						<label class="control-label" for="Parameter2">parameter2</label>
+						<div class="controls">
+							<input id="Parameter2" name="Parameter2" type="text" value="500" class="input-xlarge">
+							<p class="help-block" id="help2">y coordinate of the start point</p>
+						</div>
+					</div>
 
-          <!-- Text input-->
-          <div class="control-group">
-            <label class="control-label" for="Parameter3">parameter3</label>
-            <div class="controls">
-              <input id="Parameter3" name="Parameter3" type="text" value="300" class="input-xlarge">
-              <p class="help-block" id="help3">x coordinate of the end point</p>
-            </div>
-          </div>
+					<!-- Text input-->
+					<div class="control-group">
+						<label class="control-label" for="Parameter3">parameter3</label>
+						<div class="controls">
+							<input id="Parameter3" name="Parameter3" type="text" value="300" class="input-xlarge">
+							<p class="help-block" id="help3">x coordinate of the end point</p>
+						</div>
+					</div>
 
-          <!-- Text input-->
-          <div class="control-group" id="control4">
-            <label class="control-label" for="Parameter4">parameter4</label>
-            <div class="controls">
-              <input id="Parameter4" name="Parameter4" type="text" value="300" class="input-xlarge">
-              <p class="help-block" id="help4">y coordinate of the end point</p>
-            </div>
-          </div>
+					<!-- Text input-->
+					<div class="control-group" id="control4">
+						<label class="control-label" for="Parameter4">parameter4</label>
+						<div class="controls">
+							<input id="Parameter4" name="Parameter4" type="text" value="300" class="input-xlarge">
+							<p class="help-block" id="help4">y coordinate of the end point</p>
+						</div>
+					</div>
 
-          <div class="control-group" id="control5">
-            <label class="control-label" for="Parameter5">parameter5</label>
-            <div class="controls">
-              <input id="Parameter5" name="Parameter5" type="text" value="90" class="input-xlarge">
-              <p class="help-block" id="help5">x coordinate of the third point</p>
-            </div>
-          </div>
+					<div class="control-group" id="control5">
+						<label class="control-label" for="Parameter5">parameter5</label>
+						<div class="controls">
+							<input id="Parameter5" name="Parameter5" type="text" value="90" class="input-xlarge">
+							<p class="help-block" id="help5">x coordinate of the third point</p>
+						</div>
+					</div>
 
-          <div class="control-group" id="control6">
-            <label class="control-label" for="Parameter6">parameter6</label>
-            <div class="controls">
-              <input id="Parameter6" name="Parameter6" type="text" value="60" class="input-xlarge">
-              <p class="help-block" id="help6">y coordinate of the third point</p>
-            </div>
-          </div>
-          </form>
+					<div class="control-group" id="control6">
+						<label class="control-label" for="Parameter6">parameter6</label>
+						<div class="controls">
+							<input id="Parameter6" name="Parameter6" type="text" value="60" class="input-xlarge">
+							<p class="help-block" id="help6">y coordinate of the third point</p>
+						</div>
+					</div>
+				</form>
 
-          <!-- Button (Double) -->
-          <div class="control-group">
-            <div class="controls">
-              <button id="button1" name="button1" class="btn btn-success"><i class="icon-pencil"></i> Hand Draw</button>
-              <button id="button2" name="button2" class="btn btn-warning"><i class="icon-trash"></i> Clear</button>
-            </div>
-          </div>
+				<!-- Button (Double) -->
+				<div class="control-group">
+					<div class="controls buttons_group">
+						<button id="button1" name="button1" class="btn btn-success"><i class="icon-pencil"></i> Hand Draw</button>
+						<button id="button2" name="button2" class="btn btn-warning"><i class="icon-trash"></i> Clear</button>
+					</div>
+				</div>
 
-        </div>
-        
-        <!-- for overlap bug fix -->
-        <div class="span1"></div>
+			</div>
 
-        <div class="span7" id="area2">
-        </div>
-      </div> 
-      </div>
-    
+			<!-- for overlap bug fix -->
+			<div class="span1"></div>
+
+			<div class="span7" id="area2">
+			</div>
+		</div>
+	</div>
 
 
-    <script type="text/javascript">
+	<script type="text/javascript" src="./js/d3.v2.js"></script>
+	<script type="text/javascript" src="./js/require.js"></script>
+	<script type="text/javascript" src="./js/jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+  $(document).ready(function(){
     var sketch, vis, roughness, bowing, primitive, para1, para2, para3, para4; 
-    
+    $("#control5").hide();
+    $("#control6").hide();
     require(["./js/sketch"], function(ske) {
-      
-      $(document).ready(function(){
-        $("#control5").hide();
-        $("#control6").hide();
-
         $("#button1").click(function(){
           //judge if the vis exists
           if(!vis) {
@@ -247,5 +247,6 @@
       });
     });
     </script>
-  </body>
+</body>
+
 </html>
