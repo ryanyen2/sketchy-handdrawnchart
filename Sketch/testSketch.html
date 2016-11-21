@@ -11,6 +11,7 @@
 		}
 		svg {
 			border: 1.5px groove #eee;
+      margin-top: 60px;
 		}
 		p.help-block {
 			color: #0099CC;
@@ -151,8 +152,8 @@
           //judge if the vis exists
           if(!vis) {
             vis = d3.select("#area2").append("svg:svg")
-                  .attr("width", 800)
-                  .attr("height", 800)
+                  .attr("width", 700)
+                  .attr("height", 600)
                   .append("svg:g");
           }
           roughness = parseFloat($("#Roughness").val());
